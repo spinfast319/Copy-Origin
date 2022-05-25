@@ -7,12 +7,13 @@
 
 # Import dependencies
 import os  # Imports functionality that let's you interact with your operating system
+import shutil # Imports functionality that lets you copy files and directory
 import datetime # Imports functionality that lets you make timestamps
 import re # Imports regex
 
 #  Set your directories here
-album_directory = "M:\Python Test Environment\Albums" # Which directory do you want to start with?
-copy_to_directory ="M:\Python Test Environment\CopyAlbums" # Which directory do you want to start with?
+album_directory = "M:\Python Test Environment\Test Albums" # Which directory do has origin files you want to copy?
+copy_to_directory ="W:\TEST_ALBUMS" # Which directory do you want to add or replace origin files with?
 log_directory = "M:\Python Test Environment\Logs" # Which directory do you want the log in?
 
 # Set whether you are using nested folders or have all albums in one directory here
@@ -23,6 +24,7 @@ album_depth = 1
 
 # Establishes the counters for completed albums and missing origin files
 count = 0
+loop_count = 0
 good_missing = 0
 bad_missing = 0
 bad_folder_name = 0
@@ -59,11 +61,14 @@ def log_outcomes(d,p,m):
 #  A function to identify folders with the same name and copy origin files from one to the other
 def copy_origin(directory):
         global count
+        global loop_count
         global good_missing
         global bad_missing
         global bad_folder_name
         global origin_location
+        global copy_to_directory
         print ("\n")
+        loop_count +=1 # variable will increment every loop iteration
         #check to see if folder has bad characters and skip if it does
         #get album name from directory
         re1 = re.compile(r"[\\/:*\"<>|?]");
@@ -83,7 +88,34 @@ def copy_origin(directory):
             file_exists = os.path.exists('origin.yaml')
             if file_exists == True:
                 print("--Origin file found for " + name_to_check)
-                count +=1 # variable will increment every loop iteration
+                
+                #check for matchting folder name in copy_to_directory
+                print("Looking for the same directory as " + name_to_check)
+                test_path_album = copy_to_directory + os.sep + name_to_check
+                isdir_album = os.path.isdir(test_path_album)
+                if isdir_album == True:
+                    print("There is a matching album called " + name_to_check)
+                    #check to see if there is an origin file
+                    source_origin = directory  + os.sep + 'origin.yaml'
+                    copy_origin = test_path_album + os.sep + 'origin.yaml'
+                    other_file_exists = os.path.exists(copy_origin)
+                    if other_file_exists == True:
+                        print("--Origin file found for " + name_to_check)
+                        #if an origin file exists delete it
+                        os.remove(copy_origin)
+                        print("--Origin file deleted")                        
+                        #copy the origin from the source to the matching album
+                        shutil.copy(source_origin, copy_origin)  
+                        print ("--Origin file copied from source to match")
+                        count +=1 # variable will increment every loop iteration
+                    else:
+                        print("No origin file in " + name_to_check)
+                        #if no origin file exists copy from the source to the matching album
+                        shutil.copy(source_origin, copy_origin)  
+                        print ("--Origin file copied from source to match")
+                        count +=1 # variable will increment every loop iteration
+                else:
+                    print("No matching album.")
                                                                  
             #otherwise log that the origin file is missing
             else:
@@ -119,7 +151,7 @@ for i in directories:
         
 # Summary text
 print("")
-print("Double the fun. This script copied " + str(count) + " origin files.")
+print("Double the fun. This script copied " + str(count) + " origin files out of "+ str(loop_count) + " albums looking for matches.")
 print("This script looks for potential missing files or errors. The following messages outline whether any were found.")
 if bad_folder_name >= 1:
     print("--Warning: There were " + str(bad_folder_name) + " folders with illegal characters.")
