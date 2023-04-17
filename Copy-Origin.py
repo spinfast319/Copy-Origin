@@ -15,7 +15,7 @@ import re # Imports regex
 
 #  Set your directories here
 album_directory = "M:\Music" # Which directory do has origin files you want to copy?
-copy_to_directory ="W:\RED-UL-Transmission-09\downloads\complete\_flac" # Which directory do you want to add or replace origin files with?
+copy_to_directory ="M:\Python Test Environment\Test_Music" # Which directory do you want to add or replace origin files with?
 log_directory = "M:\Python Test Environment\Logs" # Which directory do you want the log in?
 
 # Set whether you are using nested folders or have all albums in one directory here
