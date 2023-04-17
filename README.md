@@ -8,6 +8,11 @@ If there is one it replaces it with once from the directory you are starting wit
 
 It can handle albums with artwork folders or multiple disc folders in them. It can also handle specials characters and skips and logs any albums that have characters that makes windows fail. It has been tested and works in both Ubuntu Linux and Windows 10.
 
+## Dependencies
+This project has a dependency on the gazelle-origin project created by x1ppy. gazelle-origin scrapes gazelle based sites and stores the related music metadata in a yaml file in the music albums folder. For this script to work you need to use a fork that has additional metadata including the tags and coverart. The fork that has the most additional metadata right now is: https://github.com/spinfast319/gazelle-origin
+
+All your albums in the directory you want to copy from will need origin files associated with them already for this script to work.
+
 ## Install and set up
 Clone this script where you want to run it.
 
@@ -21,7 +26,16 @@ Set up or specify the three directories you will be using and specify whether yo
 
 The default is 1 (Music/Album)
 
-Then run the script from the command line.  It will output how many origin files it copied over as well as how many folders it looked for them in.
+Use your terminal to navigate to the directory the script is in and run the script from the command line.  When it finishes it will output how many albums have had metadata written to them.
+
+```
+Copy-Origin.py
+```
+
+_note: on linux and mac you will likely need to type "python3 Copy-Origin.py"_  
+_note 2: you can run the script from anywhere if you provide the full path to it_ 
+
+It will output how many origin files it copied over as well as how many folders it looked for them in.
 
 It will also create logs of any missing origin files it finds and save to the logs folder.
 - Logs in the bad-missing-origin.txt file are folders that should have origin files and are missing them.
