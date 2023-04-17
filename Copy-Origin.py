@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # Match Folder and Copy Gazelle-Origin Files
 # author: hypermodified
 # This script loops through folder names in two specified directories and copys and origin file from one to the other if it finds a match.
